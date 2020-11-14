@@ -5,10 +5,11 @@ from django.urls import reverse
 from .models import Choice, Question, Idea
 
 import datetime
-
+import sqlite3
 from django.db import connection
 
 def index(request):
+    
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     context = {'latest_question_list': latest_question_list}
     return render(request, 'polls/index.html', context)
@@ -39,15 +40,13 @@ def vote(request, question_id):
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
-def idea(request):
-    idea=request.POST.get('idea')
-    #with connection.cursor() as cursor:
-    #    cursor.execute('INSERT INTO ideas (idea_text, sent_date) VALUES ("on hauskaa", datetime.datetime.now())')
-    #    row = cursor.fetchone()
-    #print(row)
-    newIdea=Idea.objects.create(idea_text=idea, sent_date=datetime.datetime.now())
-    newIdea.save()
-    print(newIdea)
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    context = {'latest_question_list': latest_question_list}
-    return render(request, 'polls/index.html', context)
+def search(request):
+    #if request.method=='POST':
+    searchWord=request.POST.get('search')
+    print(searchWord)
+    connection = sqlite3.connect('db.sqlite3')
+    cursor = connection.cursor()
+    filtered_question_list=cursor.execute("SELECT * FROM polls_question WHERE question_text LIKE '%%%s%%'" %(searchWord)).fetchall()
+    print(filtered_question_list)
+    context = {'filtered_question_list': filtered_question_list}
+    return render(request, 'polls/search.html', context)

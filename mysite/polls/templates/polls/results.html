@@ -9,11 +9,5 @@ polls/templates/polls/results.html¶
 
 <a href="{% url 'polls:detail' question.id %}">Vote again?</a>
 
-<form action="/polls/idea" method="post">
-    {% csrf_token %}
-    
-    <label for="idea">Not happy with results? Leave your improvement ideas</label><br><br>
-    <textarea rows="5" cols="20" name="idea" id="idea">Type text here</textarea><br><br>
-    
-    <input type="submit" value="Send">
-    </form>
+
+  

@@ -1,0 +1,9 @@
+{% if filtered_question_list %}
+    <ul>
+    {% for question in filtered_question_list %}
+        <li>{{ question.1 }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No questions found.</p>
+{% endif %}

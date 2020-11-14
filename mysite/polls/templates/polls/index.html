@@ -7,3 +7,12 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+
+<form action="search/" method="post">
+    {% csrf_token %}
+    
+    <label for="search">Want to search questions? Enter search text</label><br><br>
+    <input type="text" name="search" id="search"><br><br>
+    
+    <input type="submit" value="Send">
+    </form> 
