@@ -2,7 +2,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
-from .models import Choice, Question
+from .models import Choice, Question, Idea
+
+import datetime
+
+from django.db import connection
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -34,3 +38,16 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+def idea(request):
+    idea=request.POST.get('idea')
+    #with connection.cursor() as cursor:
+    #    cursor.execute('INSERT INTO ideas (idea_text, sent_date) VALUES ("on hauskaa", datetime.datetime.now())')
+    #    row = cursor.fetchone()
+    #print(row)
+    newIdea=Idea.objects.create(idea_text=idea, sent_date=datetime.datetime.now())
+    newIdea.save()
+    print(newIdea)
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    context = {'latest_question_list': latest_question_list}
+    return render(request, 'polls/index.html', context)

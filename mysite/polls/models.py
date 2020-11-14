@@ -20,3 +20,11 @@ class Choice(models.Model):
     votes = models.IntegerField(default=0)
     def __str__(self):
         return self.choice_text
+
+class Idea(models.Model):
+    idea_text = models.CharField(max_length=200)
+    sent_date = models.DateTimeField('date sent')
+    def __str__(self):
+        return self.idea_text
+    def was_published_recently(self):
+        return self.sent_date >= timezone.now() - datetime.timedelta(days=1)
