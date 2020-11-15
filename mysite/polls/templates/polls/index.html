@@ -1,3 +1,4 @@
+<h2>Available polls</h2>
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
@@ -16,3 +17,11 @@
     
     <input type="submit" value="Send">
     </form> 
+    <h2>Register here</h2>
+    <label for="search">Want to use the app as registered user?</label><br><br>
+    <form action="register/" method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" id="username"><br><br>
+        <input type="text" name="password" id="password"><br><br>
+      <button type="submit">Register</button>
+    </form>

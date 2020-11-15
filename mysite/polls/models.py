@@ -28,3 +28,7 @@ class Idea(models.Model):
         return self.idea_text
     def was_published_recently(self):
         return self.sent_date >= timezone.now() - datetime.timedelta(days=1)
+
+class PollUser(models.Model):
+    username=models.CharField(max_length=200)
+    password=models.CharField(max_length=200)

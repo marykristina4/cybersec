@@ -1,8 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .models import Choice, Question, Idea
+from .models import Choice, Question, Idea, PollUser
 
 import datetime
 import sqlite3
@@ -50,3 +50,21 @@ def search(request):
     print(filtered_question_list)
     context = {'filtered_question_list': filtered_question_list}
     return render(request, 'polls/search.html', context)
+
+def register(request):
+    username=request.POST.get('username')
+    password=request.POST.get('password')
+    user = PollUser.objects.create(username=username, password=password)
+    return redirect("/polls/loginView/")
+
+def login(request):
+    username=request.POST.get('username')
+    passwordPut=request.POST.get('password')
+    print('Hihhei perillä')
+    user = PollUser.objects.get(username=username)
+    if getattr(user, 'password')==passwordPut:
+        return redirect("/polls/search/")
+    return render(request, 'polls/index.html')
+
+def loginView(request):
+    return render(request, 'polls/login.html')
