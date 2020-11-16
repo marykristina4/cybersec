@@ -7,6 +7,7 @@ from .models import Choice, Question, Idea, PollUser
 import datetime
 import sqlite3
 from django.db import connection
+from django.core.exceptions import ObjectDoesNotExist
 
 def index(request):
     
@@ -61,6 +62,7 @@ def login(request):
     username=request.POST.get('username')
     passwordPut=request.POST.get('password')
     print('Hihhei perillä')
+
     user = PollUser.objects.get(username=username)
     if getattr(user, 'password')==passwordPut:
         return redirect("/polls/search/")
